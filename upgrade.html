@@ -131,27 +131,45 @@
 
             let email = user.user.email;
 
-            try {
-                let response = await fetch("https://dsquizapp-backend.onrender.com/create-checkout-session", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({ email })
-                });
+            // ✅ Call the backend to create a Stripe Checkout session
+            let response = await fetch("https://dsquizapp-backend.onrender.com/create-checkout-session", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email })
+            });
 
-                if (!response.ok) throw new Error("Failed to create checkout session");
+            let session = await response.json();
 
-                let session = await response.json();
-                await stripe.redirectToCheckout({ sessionId: session.id });
-            } catch (error) {
-                alert("Error: " + error.message);
-                console.error(error);
+            if (session.error) {
+                alert("Error initiating payment: " + session.error);
+                return;
+            }
+
+            // ✅ Redirect to Stripe Checkout
+            const { error } = await stripe.redirectToCheckout({ sessionId: session.id });
+
+            if (!error) {
+                console.log("✅ Payment started. Waiting for success...");
+
+                // ✅ After payment, update user status immediately
+                await updateSubscription(email);
             }
         }
 
-        function goBack() {
-            window.location.href = "index.html"; // ✅ Redirect back to dashboard
+        async function updateSubscription(email) {
+            let { error } = await supabase
+                .from("users")
+                .update({ subscription_status: "premium" })
+                .eq("email", email);
+
+            if (error) {
+                console.error("❌ Error updating subscription:", error.message);
+                alert("Subscription update failed!");
+            } else {
+                console.log(`✅ User ${email} upgraded to Premium!`);
+                alert("🎉 Upgrade successful! You now have full access.");
+                window.location.href = "index.html"; // Redirect back to dashboard
+            }
         }
     </script>
 </body>
