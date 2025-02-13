@@ -119,7 +119,7 @@
     <script src="https://js.stripe.com/v3/"></script> <!-- ✅ Load Stripe -->
 
     <script>
-        const stripe = Stripe("pk_test_51MRwIIE9z0Y6IzsPf60b9Qs9JoahPggSuR4bPJDEZoqrSioMd8zV8nx5TBts9TC9ioq6FxSLBB74glvos1n75jQg00kAeQRbCz"); // ✅ Replace with your Stripe public key
+        const stripe = Stripe("pk_live_51MRwIIE9z0Y6IzsPzwCfI50nyPocxhzKSqKbuhLdMD3p5l4qw7xEKDJ8dfqxyyqbzs7mAaKZWNnoaXYoZiOJoyE70099Xa606g"); // ✅ Replace with your Stripe public key
 
         async function upgradeToPremium() {
             let { data: user, error: authError } = await supabase.auth.getUser();
@@ -132,7 +132,7 @@
             let email = user.user.email;
 
             try {
-                let response = await fetch("http://localhost:5001/create-checkout-session", {
+                let response = await fetch("http://https://dsquizapp-backend.onrender.com/create-checkout-session", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
