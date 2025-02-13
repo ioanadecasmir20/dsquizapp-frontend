@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upgrade to Premium</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            background-color: #f4f4f4;
+            color: #000;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.1);
+            max-width: 850px;
+            margin: 40px auto;
+        }
+
+        .title {
+            font-size: 1.8em;
+            color: #0b3d91;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .features {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        .features ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .features li {
+            padding: 8px;
+            font-size: 1.1em;
+            display: flex;
+            align-items: center;
+        }
+
+        .features li::before {
+            content: "✔";
+            color: #0b3d91;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+
+        .button-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .upgrade-button,
+        .back-button {
+            display: block;
+            padding: 15px;
+            border: none;
+            font-size: 1.2em;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            width: 100%;
+        }
+
+        .upgrade-button {
+            background: linear-gradient(135deg, #0b3d91, #06275b);
+            color: white;
+        }
+
+        .upgrade-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .back-button {
+            background: #ddd;
+            color: #333;
+        }
+
+        .back-button:hover {
+            background: #bbb;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="title">Upgrade to Premium</h1>
+        <p>Unlock all features and get full access to mock tests, all topics, and unlimited attempts!</p>
+        <div class="features">
+            <ul>
+                <li>Unlimited mock test attempts</li>
+                <li>Access to all topics per unit</li>
+                <li>Full Q&A database</li>
+                <li>Priority support</li>
+            </ul>
+        </div>
+
+        <div class="button-container">
+            <button class="upgrade-button" onclick="upgradeToPremium()">Upgrade for £9.99</button>
+            <button class="back-button" onclick="goBack()">← Back to Dashboard</button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    <script src="config.js"></script>
+    <script src="https://js.stripe.com/v3/"></script> <!-- ✅ Load Stripe -->
+
+    <script>
+        const stripe = Stripe("pk_test_51MRwIIE9z0Y6IzsPf60b9Qs9JoahPggSuR4bPJDEZoqrSioMd8zV8nx5TBts9TC9ioq6FxSLBB74glvos1n75jQg00kAeQRbCz"); // ✅ Replace with your Stripe public key
+
+        async function upgradeToPremium() {
+            let { data: user, error: authError } = await supabase.auth.getUser();
+            if (!user || authError) {
+                alert("Please log in to upgrade.");
+                window.location.href = "login.html";
+                return;
+            }
+
+            let email = user.user.email;
+
+            try {
+                let response = await fetch("http://localhost:5001/create-checkout-session", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ email })
+                });
+
+                if (!response.ok) throw new Error("Failed to create checkout session");
+
+                let session = await response.json();
+                await stripe.redirectToCheckout({ sessionId: session.id });
+            } catch (error) {
+                alert("Error: " + error.message);
+                console.error(error);
+            }
+        }
+
+        function goBack() {
+            window.location.href = "index.html"; // ✅ Redirect back to dashboard
+        }
+    </script>
+</body>
+
+</html>

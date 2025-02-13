@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit 2 - Working as a Door Supervisor</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        /* General Styles */
+        body {
+            background-color: #f4f4f4;
+            color: #000;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* 📌 Safe area for notch (padding for iPhones with camera cutout) */
+        .safe-area {
+            padding-top: env(safe-area-inset-top, 20px);
+        }
+        
+        /* Upgrade Button - Only Visible for Free Users */
+        .upgrade-container {
+            display: none; /* Hidden by default */
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        /* Upgrade Button - Properly Centered & Contained */
+        .upgrade-button {
+            display: block;
+            background-color: #ffd700; /* Gold */
+            color: #0b3d91; /* Match theme */
+            font-weight: bold;
+            padding: 12px;
+            font-size: 1.2em;
+            border-radius: 8px;
+            text-decoration: none;
+            text-align: center;
+            transition: background 0.3s;
+            width: calc(100% - 20px); /* Keeps it inside container */
+            max-width: 90%; /* Prevents overflow */
+            margin: 0 auto 15px; /* Centers it inside the container */
+        }
+
+        .upgrade-button:hover {
+            background-color: #f4c400;
+        }
+
+        /* Fix container padding to ensure button fits */
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            max-width: 95%;
+            margin: 60px auto 10px; /* Move down from notch */
+            text-align: center;
+            position: relative;
+            overflow: hidden; /* Prevents content from spilling */
+            padding-bottom: 40px; /* ⬅️ Added space for bottom menu */
+        }
+
+        /* Header Title */
+        .title {
+            font-size: 1.8em;
+            color: #0b3d91;
+            font-weight: bold;
+        }
+
+        /* Description */
+        .description {
+            margin: 15px 0;
+            font-size: 1.1em;
+            text-align: left;
+        }
+
+        /* 🟡 Test Details (Now in Vertical Layout) */
+        .test-details {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            margin: 20px 0;
+            font-size: 1.2em;
+        }
+
+        .test-detail {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #eef4ff;
+            padding: 10px;
+            border-radius: 8px;
+            width: 90%;
+            justify-content: center;
+        }
+
+        .test-detail i {
+            color: #0b3d91;
+        }
+
+        /* Start Test Button */
+        .button {
+            display: block;
+            background-color: #0b3d91;
+            color: white;
+            padding: 12px;
+            margin: 10px auto;
+            border: none;
+            width: 90%;
+            font-size: 1.2em;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .button:hover {
+            background-color: #06275b;
+        }
+        
+        /* Q&A Section Button */
+        .qa-button {
+            display: block;
+            background-color: #0b3d91;
+            color: white;
+            padding: 12px;
+            margin: 10px auto;
+            border: none;
+            width: 90%;
+            font-size: 1.2em;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .qa-button:hover {
+            background-color: #06275b;
+        }
+
+        /* Topic List */
+        .topics-list {
+            margin-top: 20px;
+            padding-bottom: 80px; /* ⬅️ Extra space for safe scrolling */
+        }
+
+        .topic-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #0b3d91;
+            color: white;
+            padding: 12px;
+            margin: 5px 0;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.1em;
+        }
+        .topic-item:hover {
+            background-color: #06275b;
+        }
+
+        /* 🟡 Move Navigation to Bottom */
+        .bottom-nav {
+            display: flex;
+            justify-content: space-around;
+            background-color: #0b3d91;
+            padding: 12px 0;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            border-top: 2px solid #fff;
+        }
+
+        .bottom-nav a {
+            flex: 1;
+            text-align: center;
+            color: white;
+            text-decoration: none;
+            font-size: 1.1em;
+            padding: 12px;
+        }
+        .bottom-nav a:hover {
+            background-color: #06275b;
+        }
+        
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    <script src="config.js"></script>  <!-- ✅ Load config.js first -->
+    <script src="unit.js" defer></script>
+</head>
+<body data-unit="unit2" class="safe-area">
+    <div class="container">
+        <!-- 🟡 Upgrade Button -->
+        <div class="upgrade-container" id="upgrade-container">
+            <a href="upgrade.html" class="upgrade-button">Upgrade to Premium</a>
+        </div>
+
+        <h1 class="title">Unit 2 - Working as a Door Supervisor</h1>
+        
+        <p class="description">This unit focuses on essential skills for door supervisors, including crime recognition, search procedures, licensing laws, managing venue capacity, and evidence preservation. Completing this unit ensures compliance with legal and safety regulations.</p>
+        
+        <div class="test-details">
+            <div class="test-detail"><i class="fas fa-question-circle"></i> <b>50 Questions</b></div>
+            <div class="test-detail"><i class="fas fa-clock"></i> <b>1h 15m</b></div>
+            <div class="test-detail"><i class="fas fa-check-circle"></i> <b>70% Pass</b></div>
+        </div>
+        <button class="button" onclick="startMockTest('unit2')">Start Mock Test</button>
+        <!-- 🟡 New Q&A Section Button -->
+        <button class="button qa-button" onclick="openQASection()">Review all Q&A</button>
+
+        <h2 class="title">Practice by Topics</h2>
+        <p class="description">You can also practice by specific topics. Each topic test consists of a selection of relevant questions to help reinforce your understanding.</p>
+        <div class="topics-list" id="topicsList"></div>
+    </div>
+
+    <!-- 🟡 New Bottom Navigation Bar -->
+    <nav class="bottom-nav">
+        <a href="index.html">Home</a>
+        <a href="unit1.html">Unit 1</a>
+        <a href="unit2.html">Unit 2</a>
+        <a href="unit3.html">Unit 3</a>
+        <a href="unit4.html">Unit 4</a>
+    </nav>
+</body>
+</html>

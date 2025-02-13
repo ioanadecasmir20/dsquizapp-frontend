@@ -1,0 +1,218 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #0b3d91;
+  color: white;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  width: 80%;
+  margin: auto;
+  background: #1a1a2e;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.1);
+}
+
+h1, h2 {
+  color: #06275b;
+}
+
+button {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 15px;
+  margin: 5px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+.mock-options {
+  display: none;
+  margin-top: 10px;
+}
+
+.navbar {
+  background-color: #06275b;
+  padding: 10px;
+}
+
+.navbar ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.navbar ul li {
+  display: inline;
+  margin-right: 15px;
+}
+
+.navbar ul li a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  margin: 0;
+  padding: 20px;
+  text-align: center;
+}
+
+.dashboard-container {
+  max-width: 800px;
+  margin: auto;
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  color: #333;
+}
+
+h3 {
+  margin: 0;
+  color: #555;
+}
+
+.mock-card, .topic-card {
+  background: #fff;
+  padding: 15px;
+  margin: 10px 0;
+  border-radius: 8px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.progress-bar {
+  width: 100%;
+  height: 10px;
+  background: #ddd;
+  border-radius: 5px;
+  margin-top: 5px;
+}
+
+.progress-fill {
+  height: 10px;
+  border-radius: 5px;
+  background: #4CAF50;
+}
+
+button {
+  background: #007BFF;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 15px;
+}
+
+button:hover {
+  background: #0056b3;
+}
+
+.topic-item {
+  background: #0b3d91;
+  color: white;
+  padding: 15px;
+  margin: 10px 0;
+  border-radius: 8px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 80px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+/* Hover effect */
+.topic-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Title Section */
+.topic-title {
+  font-weight: bold;
+  font-size: 1em;
+  flex: 3;
+  text-align: left;
+}
+
+/* Progress Container */
+.progress-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+/* Progress Pie */
+.progress-pie {
+  width: 50px;
+  height: 50px;
+  position: relative;
+}
+
+/* SVG Circle */
+.progress-pie svg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+/* Background Circle */
+.progress-bg {
+  fill: none;
+  stroke: #ccc;
+  stroke-width: 6;
+}
+
+/* Green Progress */
+.progress-fill {
+  fill: none;
+  stroke: #4CAF50;
+  stroke-width: 6;
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  transition: stroke-dashoffset 0.6s ease-in-out;
+}
+
+/* Percentage Text */
+.progress-text {
+  position: absolute;
+  font-size: 0.8em;
+  font-weight: bold;
+  color: white;
+  text-align: center;
+  width: 100%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.locked {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.lock-icon {
+  color: red;
+  font-size: 1.2em;
+  margin-left: 5px;
+}

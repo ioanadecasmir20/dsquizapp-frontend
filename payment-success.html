@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Successful</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* General App Styling */
+        body {
+            background-color: #f4f4f4;
+            color: #000;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        /* Container to match app styling */
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            max-width: 90%;
+            margin: 80px auto 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        /* Title styling */
+        .title {
+            font-size: 1.8em;
+            color: #0b3d91;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        /* Payment success message */
+        .message {
+            font-size: 1.2em;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        /* User email styling */
+        .user-email {
+            font-size: 1em;
+            color: #555;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        /* Styled button */
+        .dashboard-button {
+            background: linear-gradient(135deg, #0b3d91, #06275b);
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 90%;
+            max-width: 300px;
+            text-align: center;
+            margin-top: 15px;
+            display: inline-block;
+        }
+
+        .dashboard-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Payment Success Container -->
+    <div class="container">
+        <h1 class="title">🎉 Payment Successful!</h1>
+        <p class="message">Thank you for upgrading to Premium. Your account has been updated.</p>
+        
+        <!-- Display the user's email -->
+        <p class="user-email" id="user-email"></p>
+
+        <button class="dashboard-button" onclick="goToDashboard()">Go to Dashboard</button>
+    </div>
+
+    <script>
+        // Function to retrieve query parameters from the URL
+        function getQueryParam(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+
+        // Retrieve the email from the URL
+        const email = getQueryParam('email');
+        
+        // Display the email
+        if (email) {
+            document.getElementById('user-email').textContent = `Email: ${email}`;
+        }
+
+        // Function to redirect to the dashboard
+        function goToDashboard() {
+            window.location.href = "index.html"; // Redirect to the dashboard
+        }
+    </script>
+
+</body>
+</html>
