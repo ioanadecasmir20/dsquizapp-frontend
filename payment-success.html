@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -74,39 +75,66 @@
         }
     </style>
 </head>
+
 <body>
 
     <!-- Payment Success Container -->
     <div class="container">
         <h1 class="title">🎉 Payment Successful!</h1>
         <p class="message">Thank you for upgrading to Premium. Your account has been updated.</p>
-        
+
         <!-- Display the user's email -->
         <p class="user-email" id="user-email"></p>
 
         <button class="dashboard-button" onclick="goToDashboard()">Go to Dashboard</button>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    <script src="config.js"></script> <!-- ✅ Load Supabase config -->
+
     <script>
-        // Function to retrieve query parameters from the URL
+        async function updateSubscription(email) {
+            if (!email) {
+                console.error("❌ No email found, cannot update subscription.");
+                return;
+            }
+
+            console.log(`🔹 Updating subscription for: ${email}`);
+
+            let { error } = await supabase
+                .from("users")
+                .update({ subscription_status: "premium" })
+                .eq("email", email);
+
+            if (error) {
+                console.error("❌ Error updating subscription:", error.message);
+                alert("Subscription update failed!");
+            } else {
+                console.log(`✅ User ${email} upgraded to Premium!`);
+                alert("🎉 Upgrade successful! You now have full access.");
+            }
+        }
+
+        // Retrieve the email from the URL
         function getQueryParam(name) {
             const urlParams = new URLSearchParams(window.location.search);
             return urlParams.get(name);
         }
 
-        // Retrieve the email from the URL
-        const email = getQueryParam('email');
-        
+        const email = getQueryParam("email");
+
         // Display the email
         if (email) {
-            document.getElementById('user-email').textContent = `Email: ${email}`;
+            document.getElementById("user-email").textContent = `Email: ${email}`;
+            updateSubscription(email); // ✅ Update subscription in Supabase
         }
 
-        // Function to redirect to the dashboard
+        // Redirect to dashboard
         function goToDashboard() {
-            window.location.href = "index.html"; // Redirect to the dashboard
+            window.location.href = "index.html";
         }
     </script>
 
 </body>
+
 </html>
