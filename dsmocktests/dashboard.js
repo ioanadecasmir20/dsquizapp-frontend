@@ -85,12 +85,6 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
 });
 
-// ✅ Logout function
-async function logout() {
-    let { error } = await supabase.auth.signOut();
-    if (error) {
-        console.error("❌ Logout error:", error.message);
-    } else {
-        window.location.href = "login.html";
+async function settings() {
+    window.location.href = "settings.html";
     }
-}
