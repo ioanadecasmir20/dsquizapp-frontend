@@ -13,243 +13,192 @@
             text-align: center;
             padding: 20px;
         }
-
+        
         .container {
             background: white;
-            padding: 25px;
+            padding: 30px;
             border-radius: 12px;
-            box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
+            box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.1);
             max-width: 400px;
             margin: 40px auto;
+            text-align: left;
             color: black;
         }
 
-        h1 {
+        .title {
             font-size: 1.8em;
             color: #0b3d91;
             font-weight: bold;
             margin-bottom: 20px;
+            text-align: center;
         }
 
         .input-group {
             margin-bottom: 15px;
-            text-align: left;
         }
 
         label {
             display: block;
-            font-weight: bold;
+            font-size: 1.1em;
             margin-bottom: 5px;
         }
 
         input {
             width: 100%;
             padding: 10px;
-            font-size: 1.1em;
             border: 1px solid #ccc;
-            border-radius: 5px;
+            border-radius: 6px;
+            font-size: 1em;
         }
 
         .button {
             display: block;
-            width: 100%;
             padding: 12px;
+            border: none;
             font-size: 1.2em;
             border-radius: 8px;
             cursor: pointer;
             transition: all 0.3s ease;
-            border: none;
-            text-align: center;
+            text-decoration: none;
+            width: 100%;
             margin-top: 10px;
+            text-align: center;
         }
 
         .save-button {
-            background: #0b3d91;
+            background: linear-gradient(135deg, #0b3d91, #06275b);
             color: white;
         }
 
         .save-button:hover {
-            background: #06275b;
-        }
-
-        .delete-button {
-            background: red;
-            color: white;
-        }
-
-        .delete-button:hover {
-            background: darkred;
+            transform: translateY(-3px);
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
         }
 
         .logout-button {
-            background: black;
+            background: #d9534f;
             color: white;
         }
 
         .logout-button:hover {
-            background: grey;
+            background: #b52b27;
         }
 
-        /* Popup Style */
-        .popup-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            justify-content: center;
-            align-items: center;
-        }
-
-        .popup {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-            max-width: 300px;
-        }
-
-        .popup button {
-            margin-top: 10px;
-            padding: 10px;
-            width: 100%;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .confirm-delete {
-            background: red;
+        .delete-button {
+            background: #ff4c4c;
             color: white;
         }
 
-        .cancel-delete {
-            background: grey;
-            color: white;
+        .delete-button:hover {
+            background: #d43f3f;
         }
 
+        .back-button {
+            background: #ddd;
+            color: #333;
+        }
+
+        .back-button:hover {
+            background: #bbb;
+        }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    <script src="config.js"></script>
 </head>
 <body>
 
     <div class="container">
-        <h1>Settings</h1>
-
-        <button class="button back-button" onclick="goBack()">← Back to Dashboard</button>
+        <h1 class="title">Settings</h1>
 
         <div class="input-group">
-            <label for="nickname">Nickname</label>
-            <input type="text" id="nickname" placeholder="Enter your nickname">
+            <label for="nickname">Nickname:</label>
+            <input type="text" id="nickname">
         </div>
 
         <div class="input-group">
-            <label for="email">Email</label>
-            <input type="email" id="email" placeholder="Enter your email">
+            <label for="email">Email:</label>
+            <input type="email" id="email">
         </div>
 
         <div class="input-group">
-            <label for="password">New Password</label>
-            <input type="password" id="password" placeholder="Enter new password">
+            <label for="password">New Password:</label>
+            <input type="password" id="password" placeholder="Leave blank if unchanged">
         </div>
 
-        <button class="button save-button" onclick="updateUserDetails()">Save Changes</button>
-        <button class="button delete-button" onclick="openDeletePopup()">Delete Account</button>
+        <button class="button save-button" onclick="updateProfile()">Save Changes</button>
+        <button class="button delete-button" onclick="confirmDeleteAccount()">Delete Account</button>
         <button class="button logout-button" onclick="logout()">Logout</button>
+        <button class="button back-button" onclick="goBack()">← Back to Dashboard</button>
     </div>
-
-    <!-- DELETE ACCOUNT CONFIRMATION POPUP -->
-    <div class="popup-overlay" id="deletePopup">
-        <div class="popup">
-            <p>Are you sure you want to delete your account? This action is irreversible.</p>
-            <button class="confirm-delete" onclick="deleteAccount()">Yes, Delete</button>
-            <button class="cancel-delete" onclick="closeDeletePopup()">Cancel</button>
-        </div>
-    </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-    <script src="config.js"></script>
 
     <script>
-        const supabase = window.supabase;
+        document.addEventListener("DOMContentLoaded", async () => {
+            let email = localStorage.getItem("currentUser");
+            let nickname = localStorage.getItem("nickname");
 
-        async function updateUserDetails() {
-            let { data: user, error: authError } = await supabase.auth.getUser();
-            if (!user || authError) {
-                alert("Please log in to update details.");
+            if (email) document.getElementById("email").value = email;
+            if (nickname) document.getElementById("nickname").value = nickname;
+        });
+
+        async function updateProfile() {
+            let email = document.getElementById("email").value.trim();
+            let nickname = document.getElementById("nickname").value.trim();
+            let password = document.getElementById("password").value.trim();
+            let user = await supabase.auth.getUser();
+
+            if (!user || !user.data.user) {
+                alert("User not logged in!");
                 return;
             }
 
-            let email = document.getElementById("email").value;
-            let nickname = document.getElementById("nickname").value;
-            let password = document.getElementById("password").value;
-
             let updates = {};
-            if (email) updates.email = email;
             if (nickname) updates.nickname = nickname;
-            
-            if (email || nickname) {
-                let { error } = await supabase.from("users").update(updates).eq("email", user.user.email);
-                if (error) {
-                    alert("Error updating details: " + error.message);
-                    return;
-                }
+            if (password) updates.password = password;
+
+            let { error } = await supabase.auth.updateUser(updates);
+            if (error) {
+                alert("Error updating profile: " + error.message);
+                return;
             }
 
-            if (password) {
-                let { error: passwordError } = await supabase.auth.updateUser({ password });
-                if (passwordError) {
-                    alert("Error updating password: " + passwordError.message);
-                    return;
-                }
-            }
+            await supabase.from("users").update({ nickname }).eq("email", email);
 
-            alert("✅ Your details have been updated.");
-            location.reload();
+            localStorage.setItem("nickname", nickname);
+            alert("Profile updated successfully!");
+            window.location.reload();
         }
 
-        function openDeletePopup() {
-            document.getElementById("deletePopup").style.display = "flex";
-        }
-
-        function closeDeletePopup() {
-            document.getElementById("deletePopup").style.display = "none";
+        function confirmDeleteAccount() {
+            let confirmDelete = confirm("Are you sure you want to delete your account? This action is irreversible.");
+            if (confirmDelete) deleteAccount();
         }
 
         async function deleteAccount() {
-            let { data: user, error: authError } = await supabase.auth.getUser();
-            if (!user || authError) {
-                alert("Please log in to delete your account.");
+            let user = await supabase.auth.getUser();
+
+            if (!user || !user.data.user) {
+                alert("User not logged in!");
                 return;
             }
 
-            let email = user.user.email;
-            let { error } = await supabase.from("users").delete().eq("email", email);
-            
-            if (error) {
-                alert("Error deleting account: " + error.message);
-                return;
-            }
-
+            let email = user.data.user.email;
+            await supabase.from("users").delete().eq("email", email);
             await supabase.auth.signOut();
-            alert("❌ Account deleted successfully.");
+
+            alert("Account deleted successfully.");
             window.location.href = "index.html";
         }
 
-        // ✅ Logout function
         async function logout() {
-            let { error } = await supabase.auth.signOut();
-            if (error) {
-                console.error("❌ Logout error:", error.message);
-            } else {
-                window.location.href = "login.html";
-            }
-
-        function goBack() {
-            window.location.href = "index.html"; // Redirects back to the dashboard
+            await supabase.auth.signOut();
+            localStorage.clear();
+            alert("Logged out successfully!");
+            window.location.href = "login.html";
         }
 
+        function goBack() {
+            window.location.href = "index.html";
+        }
     </script>
 
 </body>
