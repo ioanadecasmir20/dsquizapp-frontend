@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Support - DS Quiz App</title>
+    <title>Support - DS Mock Tests App</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script defer src="config.js"></script> <!-- ✅ Load Supabase config first -->
     <style>
@@ -102,17 +102,67 @@
         <p>If you need help using the DS Quiz App, check out our FAQs or send us a message.</p>
 
         <h2>📌 Frequently Asked Questions</h2>
+        
         <div class="faq-item">
-            <button onclick="toggleAnswer(1)">❓ How do I reset my password?</button>
+            <button onclick="toggleAnswer(1)">❓ How do I create an account?</button>
             <div class="answer" id="answer1">
-                <p>Go to the login page and click "Forgot Password?" Follow the instructions to reset it.</p>
+                <p>Tap "Sign Up" on the login page and enter your details. You'll receive a confirmation email to activate your account.</p>
             </div>
         </div>
 
         <div class="faq-item">
-            <button onclick="toggleAnswer(2)">❓ How can I upgrade to Premium?</button>
+            <button onclick="toggleAnswer(2)">❓ Can I use the app without an account?</button>
             <div class="answer" id="answer2">
-                <p>Go to the settings page and select "Upgrade to Premium." Follow the on-screen instructions to complete your purchase.</p>
+                <p>No, you need to sign up to access the app.</p>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <button onclick="toggleAnswer(3)">❓ Will I be charged monthly for my subscription?</button>
+            <div class="answer" id="answer3">
+                <p>No, there is only a one time fee that will give you unlimited access.</p>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <button onclick="toggleAnswer(4)">❓ Do I need to pay again if I delete my account?</button>
+            <div class="answer" id="answer4">
+                <p>No, you can create a new account for free in the app. However, if you install the app using a different purchase ID on the same or different device, you will have to pay again.</p>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <button onclick="toggleAnswer(5)">❓ Can I review my past test results?</button>
+            <div class="answer" id="answer5">
+                <p>You can review your last attempt results for each unit mock test and topic on the Home Page/Dashboard at the bottom.</p>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <button onclick="toggleAnswer(6)">❓ Is there a time limit on the tests?</button>
+            <div class="answer" id="answer6">
+                <p>Yes, mock tests have a time limit similar to the real exam which is displayed at the top. However, there is no time limit if you practice by topic.</p>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <button onclick="toggleAnswer(6)">❓ How do I start a mock test?</button>
+            <div class="answer" id="answer6">
+                <p>Select a Unit from the Dashboad or from the Navigation Bar, then click "Start Mock Test".</p>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <button onclick="toggleAnswer(7)">❓ How are the questions designed?</button>
+            <div class="answer" id="answer7">
+                <p>Questions are based on real SIA Door Supervisor Exam formats, ensuring they match industry standards.</p>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <button onclick="toggleAnswer(8)">❓ How do I contact support?</button>
+            <div class="answer" id="answer8">
+                <p>Complete the form below and a team member will get in touch with you within 24h.</p>
             </div>
         </div>
 
