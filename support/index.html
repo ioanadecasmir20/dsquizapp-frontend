@@ -225,25 +225,32 @@
         document.getElementById("supportForm").addEventListener("submit", async function (event) {
             event.preventDefault();
 
-            let name = document.getElementById("name").value;
-            let replyType = document.getElementById("replyType").value;
-            let email = document.getElementById("email").value || "";
-            let phone = document.getElementById("phone").value || "";
-            let query = document.getElementById("query").value;
+            let name = document.getElementById("name").value.trim();
+            let replyType = document.getElementById("replyType").value.trim();
+            let email = document.getElementById("email").value.trim() || null;
+            let phone = document.getElementById("phone").value.trim() || null;
+            let query = document.getElementById("query").value.trim();
             let caseNo = "DS-" + Math.floor(100000 + Math.random() * 900000);
 
-            let { error } = await supabase.from("queries").insert([
-                { name, replyType, email, phone, query, caseNo }
-            ]);
+           // ✅ Ensure required fields are filled
+           if (!name || !replyType || !query) {
+               alert("❌ Please fill in all required fields.");
+               return;
+            }
+
+           // ✅ Insert Data into Supabase
+           let { error } = await supabase.from("queries").insert([
+               { name, replyType, email, phone, query, caseNo }
+           ]);
 
             if (error) {
+                console.error("❌ Supabase Error:", error.message);
                 alert("❌ Error submitting query. Please try again.");
             } else {
                 document.getElementById("caseNumber").innerText = caseNo;
                 document.getElementById("popup").style.display = "block";
             }
         });
-
         function closePopup() {
             document.getElementById("popup").style.display = "none";
             document.getElementById("supportForm").reset();
