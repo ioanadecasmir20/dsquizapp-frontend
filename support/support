@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Support - DS Quiz App</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script defer src="config.js"></script> <!-- ✅ Load Supabase config first -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2 {
+            color: #0b3d91;
+        }
+
+        .faq-item {
+            border-bottom: 1px solid #ddd;
+            padding: 10px 0;
+        }
+
+        .faq-item button {
+            width: 100%;
+            text-align: left;
+            background: none;
+            border: none;
+            font-size: 1.1em;
+            cursor: pointer;
+            padding: 10px;
+            color: #0b3d91;
+        }
+
+        .faq-item button:hover {
+            text-decoration: underline;
+        }
+
+        .answer {
+            display: none;
+            padding: 10px;
+            color: #333;
+        }
+
+        .form-container {
+            margin-top: 20px;
+            padding: 10px;
+            background: #eaf2ff;
+            border-radius: 5px;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+
+        button {
+            background: #0b3d91;
+            color: white;
+            padding: 10px;
+            width: 100%;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+            font-size: 1em;
+        }
+
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Support - DS Quiz App</h1>
+        <p>If you need help using the DS Quiz App, check out our FAQs or send us a message.</p>
+
+        <h2>📌 Frequently Asked Questions</h2>
+        <div class="faq-item">
+            <button onclick="toggleAnswer(1)">❓ How do I reset my password?</button>
+            <div class="answer" id="answer1">
+                <p>Go to the login page and click "Forgot Password?" Follow the instructions to reset it.</p>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <button onclick="toggleAnswer(2)">❓ How can I upgrade to Premium?</button>
+            <div class="answer" id="answer2">
+                <p>Go to the settings page and select "Upgrade to Premium." Follow the on-screen instructions to complete your purchase.</p>
+            </div>
+        </div>
+
+        <h2>💬 Chat with Us</h2>
+        <div class="form-container">
+            <form id="supportForm">
+                <input type="text" id="name" placeholder="Your Name" required>
+                
+                <label for="replyType">How should we reply?</label>
+                <select id="replyType" required>
+                    <option value="">Select an option</option>
+                    <option value="Email">Email</option>
+                    <option value="Call">Call</option>
+                </select>
+
+                <input type="email" id="email" placeholder="Your Email (if selected)" style="display: none;">
+                <input type="tel" id="phone" placeholder="Your Phone (if selected)" style="display: none;">
+
+                <textarea id="query" placeholder="Type your question here..." required></textarea>
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ✅ Popup Confirmation -->
+    <div id="popup" class="popup">
+        <h3>✅ Query Submitted!</h3>
+        <p>Your case number is: <strong id="caseNumber"></strong></p>
+        <button onclick="closePopup()">OK</button>
+    </div>
+
+    <script>
+        function toggleAnswer(id) {
+            var answer = document.getElementById("answer" + id);
+            answer.style.display = answer.style.display === "block" ? "none" : "block";
+        }
+
+        document.getElementById("replyType").addEventListener("change", function () {
+            var emailField = document.getElementById("email");
+            var phoneField = document.getElementById("phone");
+
+            if (this.value === "Email") {
+                emailField.style.display = "block";
+                emailField.setAttribute("required", "true");
+                phoneField.style.display = "none";
+                phoneField.removeAttribute("required");
+            } else if (this.value === "Call") {
+                phoneField.style.display = "block";
+                phoneField.setAttribute("required", "true");
+                emailField.style.display = "none";
+                emailField.removeAttribute("required");
+            } else {
+                emailField.style.display = "none";
+                phoneField.style.display = "none";
+            }
+        });
+
+        document.getElementById("supportForm").addEventListener("submit", async function (event) {
+            event.preventDefault();
+
+            let name = document.getElementById("name").value;
+            let replyType = document.getElementById("replyType").value;
+            let email = document.getElementById("email").value || "";
+            let phone = document.getElementById("phone").value || "";
+            let query = document.getElementById("query").value;
+            let caseNo = "DS-" + Math.floor(100000 + Math.random() * 900000);
+
+            let { error } = await supabase.from("queries").insert([
+                { name, replyType, email, phone, query, caseNo }
+            ]);
+
+            if (error) {
+                alert("❌ Error submitting query. Please try again.");
+            } else {
+                document.getElementById("caseNumber").innerText = caseNo;
+                document.getElementById("popup").style.display = "block";
+            }
+        });
+
+        function closePopup() {
+            document.getElementById("popup").style.display = "none";
+            document.getElementById("supportForm").reset();
+        }
+    </script>
+
+</body>
+</html>
